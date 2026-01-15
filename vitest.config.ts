@@ -5,9 +5,14 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   test: {
-    environment: "jsdom",
+    environment: "node",
     globals: true,
     setupFiles: ["./src/tests/setup.ts"],
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    include: ["src/**/*.{test,spec}.{ts,tsx}", "convex/**/*.{test,spec}.ts"],
+    server: {
+      deps: {
+        inline: ["convex-test"],
+      },
+    },
   },
 });

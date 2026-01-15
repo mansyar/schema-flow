@@ -1,14 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Authenticated, Unauthenticated } from "convex/react";
+import {
+  Authenticated,
+  Unauthenticated,
+  useQuery,
+  useMutation,
+} from "convex/react";
+import { api } from "../../convex/_generated/api";
 import {
   Layout,
   Plus,
   Search,
   Table as TableIcon,
   Sparkles,
+  FolderOpen,
 } from "lucide-react";
 import { SignInButton } from "@/components/auth/SignInButton";
+import { useState } from "react";
 
 export const Route = createFileRoute("/")({ component: App });
 
@@ -91,6 +99,19 @@ function LandingPage() {
 }
 
 function Dashboard() {
+  const projects = useQuery(api.projects.listByOwner);
+  const createProject = useMutation(api.projects.create);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateProject = async () => {
+    setIsCreating(true);
+    try {
+      await createProject({ name: `Project ${(projects?.length || 0) + 1}` });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex items-center justify-between mb-10">
@@ -98,29 +119,64 @@ function Dashboard() {
           <h1 className="text-3xl font-bold text-text-primary">Dashboard</h1>
           <p className="text-text-secondary">Manage your database projects</p>
         </div>
-        <Button className="gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white shadow-lg shadow-accent-blue/20">
+        <Button
+          onClick={handleCreateProject}
+          disabled={isCreating}
+          className="gap-2 bg-accent-blue hover:bg-accent-blue/90 text-white shadow-lg shadow-accent-blue/20"
+        >
           <Plus className="size-4" />
-          New Project
+          {isCreating ? "Creating..." : "New Project"}
         </Button>
       </div>
 
-      {/* Empty State / Projects List Placeholder */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="col-span-full py-20 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-bg-secondary/50">
-          <div className="p-4 rounded-full bg-bg-tertiary mb-4">
-            <Plus className="size-8 text-text-tertiary" />
-          </div>
-          <h3 className="text-lg font-semibold text-text-primary mb-1">
-            No projects yet
-          </h3>
-          <p className="text-text-secondary mb-6">
-            Create your first schema to get started
-          </p>
-          <Button variant="outline" className="border-border">
-            Import SQL File
-          </Button>
+      {projects === undefined ? (
+        <div className="text-text-secondary animate-pulse">
+          Loading projects...
         </div>
-      </div>
+      ) : projects.length === 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="col-span-full py-20 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-bg-secondary/50">
+            <div className="p-4 rounded-full bg-bg-tertiary mb-4">
+              <Plus className="size-8 text-text-tertiary" />
+            </div>
+            <h3 className="text-lg font-semibold text-text-primary mb-1">
+              No projects yet
+            </h3>
+            <p className="text-text-secondary mb-6">
+              Create your first schema to get started
+            </p>
+            <Button
+              onClick={handleCreateProject}
+              className="bg-accent-blue hover:bg-accent-blue/90"
+            >
+              Create First Project
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <Link
+              key={project._id}
+              to="/project/$projectId"
+              params={{ projectId: project._id }}
+              className="p-6 rounded-xl bg-bg-secondary border border-border hover:border-accent-blue/50 transition-all group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-lg bg-bg-tertiary group-hover:bg-accent-blue/10 transition-colors">
+                  <FolderOpen className="size-5 text-accent-blue" />
+                </div>
+              </div>
+              <h3 className="text-lg font-semibold text-text-primary mb-1 group-hover:text-accent-blue transition-colors">
+                {project.name}
+              </h3>
+              <p className="text-sm text-text-tertiary">
+                Created {new Date(project.createdAt).toLocaleDateString()}
+              </p>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
