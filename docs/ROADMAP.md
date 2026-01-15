@@ -91,32 +91,33 @@ test("user can sign in and see dashboard", async ({ page }) => {
 
 ---
 
-## Phase 2: Canvas Core
+## Phase 2: Canvas Core ✅
 
 **Duration:** Week 2  
+**Status:** Completed (2026-01-16)  
 **Goal:** Functional React Flow canvas with table CRUD operations.
 
 ### Tasks
 
-| #   | Task                       | Test First                      |
-| --- | -------------------------- | ------------------------------- |
-| 2.1 | Integrate React Flow       | Canvas renders without errors   |
-| 2.2 | Create TableNode component | Props render correctly          |
-| 2.3 | Implement table mutations  | `tables.create` mutation test   |
-| 2.4 | Implement column mutations | `columns.create` mutation test  |
-| 2.5 | Connect canvas to Convex   | Real-time sync integration test |
-| 2.6 | URL viewport state         | Search params sync test         |
+| #   | Task                       | Test First                      | Status |
+| --- | -------------------------- | ------------------------------- | ------ |
+| 2.1 | Integrate React Flow       | Canvas renders without errors   | ✅     |
+| 2.2 | Create TableNode component | Props render correctly          | ✅     |
+| 2.3 | Implement table mutations  | `tables.create` mutation test   | ✅     |
+| 2.4 | Implement column mutations | `columns.create` mutation test  | ✅     |
+| 2.5 | Connect canvas to Convex   | Real-time sync integration test | ✅     |
+| 2.6 | URL viewport state         | Search params sync test         | ✅     |
 
 ### Acceptance Criteria
 
-- [ ] Empty canvas renders with React Flow
-- [ ] User can add a new table via toolbar
-- [ ] Table node displays name and columns
-- [ ] User can edit table name inline
-- [ ] User can add/edit/delete columns
-- [ ] Changes persist to Convex
-- [ ] URL updates on pan/zoom
-- [ ] Refresh preserves viewport position
+- [x] Empty canvas renders with React Flow
+- [x] User can add a new table via toolbar
+- [x] Table node displays name and columns
+- [x] User can edit table name inline
+- [x] User can add/edit/delete columns
+- [x] Changes persist to Convex
+- [x] URL updates on pan/zoom
+- [x] Refresh preserves viewport position
 
 ### Test Strategy
 

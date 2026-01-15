@@ -110,7 +110,9 @@ export default defineSchema({
   })
     .index("by_project", ["projectId"])
     .index("by_source_table", ["sourceTableId"])
-    .index("by_target_table", ["targetTableId"]),
+    .index("by_target_table", ["targetTableId"])
+    .index("by_source_column", ["sourceColumnId"])
+    .index("by_target_column", ["targetColumnId"]),
 
   // ============================================
   // ENUM TYPES (Custom PostgreSQL Enums)
