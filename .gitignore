@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+.output/
+.nitro/
+.vinxi/
+
+# TanStack
+.tanstack/
+
+# Convex
+convex/_generated/
+
+# Environment files
+.env
+.env.*
+*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Misc
+count.txt
+todos.json
+*.tsbuildinfo
+
+# Wrangler (Cloudflare)
+.wrangler/
